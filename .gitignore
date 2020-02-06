@@ -1,3 +1,3 @@
-node_modules
-seenItemStore.json
+node_modules/
 itemsToLookFor.json
+seenItemStore.json
