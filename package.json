@@ -1,0 +1,17 @@
+{
+  "name": "productnotifier",
+  "version": "1.0.0",
+  "description": "Basically a cron job for craigslist to notify me of new deals",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Cuénod",
+  "license": "ISC",
+  "dependencies": {
+    "fast-xml-parser": "^3.16.0",
+    "node-fetch": "^2.6.0",
+    "node-notifier": "^6.0.0",
+    "object-hash": "^2.0.1"
+  }
+}
