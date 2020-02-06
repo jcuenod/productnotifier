@@ -56,7 +56,15 @@ const checkForProduct = async ({query, price}) => {
 	})
 }
 
+let lastChecked = 0
 const itemsToLookFor = require("./itemsToLookFor.json")
-setInterval(()=>{
-	itemsToLookFor.forEach(item => checkForProduct(item))
-}, CHECK_INTERVAL)
+const runCheck = ()=>{
+	const now = new Date().getTime()
+	if (now > lastChecked + CHECK_INTERVAL) {
+		console.log(Date())
+		itemsToLookFor.forEach(item => checkForProduct(item))
+		lastChecked = now
+	}
+}
+setInterval(runCheck, 1000 * 60 * 1)
+runCheck()
