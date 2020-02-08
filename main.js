@@ -44,9 +44,6 @@ const checkForProduct = async ({query, price}) => {
 	const relevantItems = items.filter(item => item.title.toLowerCase().includes(query))
 	const cheapRelevantItems = relevantItems.filter(item => item.price < price)
 	const unseenCheapRelevantItems = cheapRelevantItems.filter(item => !isSeen(item))
-	if (unseenCheapRelevantItems.length === 0) {
-		console.log("nothing new")
-	}
 
 	unseenCheapRelevantItems.forEach(item => {
 		markItemAsSeen(item)
@@ -57,15 +54,18 @@ const checkForProduct = async ({query, price}) => {
 			open: item.link
 		})
 	})
+	return unseenCheapRelevantItems.length
 }
 
 let lastChecked = 0
 const itemsToLookFor = require("./itemsToLookFor.json")
-const runCheck = ()=>{
+const runCheck = async () =>{
 	const now = new Date().getTime()
 	if (now > lastChecked + CHECK_INTERVAL) {
 		console.log(Date())
-		itemsToLookFor.forEach(item => checkForProduct(item))
+		const newItemPromises = itemsToLookFor.map(checkForProduct)
+		const newItemTotal = (await Promise.all(newItemPromises)).reduce((a,v,i) => a + v, 0)
+		console.log(newItemTotal ? `${newItemTotal} new items found (total)` : "nothing new found")
 		lastChecked = now
 	}
 }
