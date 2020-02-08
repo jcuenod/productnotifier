@@ -7,7 +7,7 @@ const fs = require("fs")
 const seenItemStorePath = "./seenItemStore.json"
 const CHECK_INTERVAL = 1000 * 60 * 10
 
-const url = query => `https://chicago.craigslist.org/search/sss?format=rss&query=${query}&sort=rel`
+const url = query => `https://chicago.craigslist.org/search/sss?format=rss&query="${query}"&sort=rel`
 
 const itemsSeen = []
 ;{
@@ -40,14 +40,15 @@ const checkForProduct = async ({query, price}) => {
 			description: item.description
 		}
 	})
-	
-	const relevantItems = items.filter(item => item.price < price)
-	const unseenRelevantItems = relevantItems.filter(item => !isSeen(item))
-	if (unseenRelevantItems.length === 0) {
+
+	const relevantItems = items.filter(item => item.title.toLowerCase().includes(query))
+	const cheapRelevantItems = relevantItems.filter(item => item.price < price)
+	const unseenCheapRelevantItems = cheapRelevantItems.filter(item => !isSeen(item))
+	if (unseenCheapRelevantItems.length === 0) {
 		console.log("nothing new")
 	}
 
-	unseenRelevantItems.forEach(item => {
+	unseenCheapRelevantItems.forEach(item => {
 		markItemAsSeen(item)
 		console.log(item)
 		notifier.notify({
