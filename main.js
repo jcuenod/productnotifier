@@ -36,6 +36,7 @@ const checkForProduct = async ({query, price}) => {
 		return {
 			title: title.trim(),
 			price: +price,
+			link: item.link,
 			description: item.description
 		}
 	})
@@ -51,7 +52,8 @@ const checkForProduct = async ({query, price}) => {
 		console.log(item)
 		notifier.notify({
 			title: `New: ${item.title}`,
-			message: item.description
+			message: item.description + "\n" + item.link,
+			open: item.link
 		})
 	})
 }
