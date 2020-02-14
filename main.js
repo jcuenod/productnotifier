@@ -49,7 +49,7 @@ const checkForProduct = async ({query, price}) => {
 		markItemAsSeen(item)
 		console.log(item)
 		notifier.notify({
-			title: `New: ${item.title}`,
+			title: `New ($${item.price}): ${item.title}`,
 			message: item.description + "\n" + item.link,
 			open: item.link
 		})
